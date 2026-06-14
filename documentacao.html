@@ -15,9 +15,13 @@
     <div class="container">
         <header>
             <nav class="top-nav">
-                <a href="index.html">Conversor & Validador</a>
+                <a href="jsontoraml.html">Conversor & Validador</a>
                 <a href="documentacao.html" class="active">Documentação</a>
                 <a href="defender.html">Pré-Comitê PROD</a>
+                <div class="user-profile" style="margin-left: auto; display: flex; align-items: center; gap: 1rem;">
+                    <span id="user-greeting" style="color: var(--text-secondary); font-size: 0.95rem; font-weight: 500;"></span>
+                    <button onclick="logout()" style="background: none; border: 1px solid rgba(239, 68, 68, 0.5); color: #ef4444; padding: 0.4rem 1rem; border-radius: 0.5rem; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 0.85rem; transition: all 0.2s;">Sair</button>
+                </div>
             </nav>
             <h1>GERE DIAGRAMA DE SEQUENCIA</h1>
         </header>
@@ -237,6 +241,21 @@
             }
         });
     </script>
-</body>
 
+    <!-- Auth Script -->
+    <script>
+        const sessionData = localStorage.getItem('currentUser');
+        if (!sessionData) {
+            window.location.href = 'index.html'; // Volta para login se não tiver sessão
+        } else {
+            const user = JSON.parse(sessionData);
+            document.getElementById('user-greeting').innerText = 'Olá, ' + user.name;
+        }
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
 </html>

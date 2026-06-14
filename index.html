@@ -4,111 +4,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JSON to RAML Converter</title>
+    <title>Login - API Portal</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos específicos para a tela de login que sobrescrevem ou estendem o style.css */
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at 50% 0%, rgba(96, 165, 250, 0.1) 0%, transparent 50%);
+        }
+        
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 2.5rem;
+            background-color: var(--panel-bg);
+            border-radius: 1rem;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .login-container h1 {
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+            background: linear-gradient(to right, #60a5fa, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .login-container p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background-color: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus {
+            border-color: var(--accent);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            margin-top: 1rem;
+        }
+
+        .login-btn:hover {
+            opacity: 0.9;
+        }
+
+        .mulesoft-logo {
+            margin-top: 2rem;
+            height: 35px;
+            opacity: 0.5;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="container">
-        <header>
-            <nav class="top-nav">
-                <a href="index.html" class="active">Conversor & Validador</a>
-                <a href="documentacao.html">Documentação</a>
-                <a href="defender.html">Pré-Comitê PROD</a>
-            </nav>
-            <h1>JSON to RAML Converter AND Validador</h1>
-        </header>
+    <div class="login-container">
+        <h1>Portal de APIs</h1>
+        <p>Faça login para acessar o sistema</p>
 
-        <main>
-            <div class="editor-section">
-                <div class="panel">
-                    <label for="json-input">Input JSON</label>
-                    <textarea id="json-input" placeholder="Cole o seu JSON aqui...">{
-  "nome": "João",
-  "idade": 30,
-  "ativo": true
-}</textarea>
-                </div>
-
-                <div class="actions">
-                    <button id="convert-btn">Converter para RAML ➔</button>
-                </div>
-
-                <div class="panel">
-                    <label for="raml-output">Output RAML</label>
-                    <textarea id="raml-output" readonly placeholder="O RAML gerado aparecerá aqui..."></textarea>
-                </div>
-            </div>
-            <div class="actions validation-actions">
-                <button id="validate-btn" class="secondary-btn">Validar e Prever no Anypoint Console ⬇</button>
+        <form id="login-form">
+            <div id="error-message" style="display: none; color: #ef4444; font-size: 0.9rem; margin-bottom: 1rem; padding: 0.5rem; background-color: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; border-radius: 0.5rem;">
+                Usuário ou senha incorretos.
             </div>
 
-            <div id="anypoint-preview" class="anypoint-preview hidden">
-                <div class="preview-header">
-                    <h3>Anypoint API Console Preview</h3>
-                    <span id="validation-status" class="status-badge success">RAML Válido</span>
-                </div>
-                <div class="preview-content">
-                    <div class="type-title">GeneratedType</div>
-                    <table class="anypoint-table" id="anypoint-table">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Type</th>
-                                <th>Required</th>
-                            </tr>
-                        </thead>
-                        <tbody id="anypoint-tbody">
-                            <!-- Injected by JS -->
-                        </tbody>
-                    </table>
-                </div>
+            <div class="form-group">
+                <label for="username">Usuário</label>
+                <input type="text" id="username" placeholder="Digite seu usuário" required>
             </div>
+            <div class="form-group">
+                <label for="password">Senha</label>
+                <input type="password" id="password" placeholder="••••••••" required>
+            </div>
+            
+            <button type="submit" class="login-btn">Entrar</button>
+        </form>
 
-            <div class="templates-section">
-                <h2>Templates RAML Prontos (Endpoints)</h2>
-                <p>Copie e use estes modelos para integrar o tipo gerado acima na sua API.</p>
-                <div class="templates-grid">
-                    <div class="template-card">
-                        <h3>Método GET (Listar)</h3>
-                        <pre><code>/items:
-  get:
-    description: Retorna uma lista de itens.
-    responses:
-      200:
-        body:
-          application/json:
-            type: array
-            items: GeneratedType</code></pre>
-                    </div>
-                    <div class="template-card">
-                        <h3>Método POST (Avançado)</h3>
-                        <pre><code>/items:
-  post:
-    description: Cria um novo item com validação e exemplos externos.
-    body:
-      application/json:
-        type: !include types/ItemType.raml
-        example: !include examples/ItemExample.json
-    responses:
-      201:
-        description: Criado com sucesso.
-        body:
-          application/json:
-            example: !include examples/ItemCreatedResponse.json
-      400:
-        description: Erro de validação dos dados.
-        body:
-          application/json:
-            example: !include examples/ErrorResponse.json</code></pre>
-                    </div>
-                </div>
-            </div>
-        </main>
+        <img src="https://www.clipartmax.com/png/middle/200-2008231_mulesoft-logo-299c-stacked-feedyeti-mulesoft-logo.png" alt="MuleSoft Logo" class="mulesoft-logo">
     </div>
 
-    <script src="app.js"></script>
+    <!-- Importa o banco de dados local -->
+    <script src="db.js"></script>
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const usernameInput = document.getElementById('username').value.trim();
+            const passwordInput = document.getElementById('password').value;
+            const errorDiv = document.getElementById('error-message');
+
+            // Busca no banco local se existe usuário correspondente
+            const user = localDatabase.users.find(u => u.username === usernameInput && u.password === passwordInput);
+
+            if (user) {
+                // Login com sucesso
+                errorDiv.style.display = 'none';
+                
+                // Salva a sessão localmente (no navegador)
+                localStorage.setItem('currentUser', JSON.stringify({
+                    username: user.username,
+                    name: user.name
+                }));
+
+                // Redireciona para o sistema
+                window.location.href = 'jsontoraml.html';
+            } else {
+                // Falha no login
+                errorDiv.style.display = 'block';
+            }
+        });
+    </script>
 </body>
 
 </html>
