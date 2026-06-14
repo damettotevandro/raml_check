@@ -353,7 +353,7 @@ button:active {
         display: none !important;
     }
 
-    /* Oculta botões de ação e cabeçalho da seção */
+    /* Oculta botões de ação e cabeçalho da seção na impressão */
     .actions, .panel h2 {
         display: none !important;
     }
@@ -368,8 +368,26 @@ button:active {
     /* Deixa o fundo transparente e o texto mais legível para impressão em papel (preto e branco) */
     .panel, .panel li, .panel textarea {
         background-color: transparent !important;
-        border-color: #cbd5e1 !important;
         color: #0f172a !important;
+    }
+
+    /* Remove o excesso de bordas (caixas dentro de caixas) na impressão */
+    .panel, .panel li {
+        border: none !important;
+        box-shadow: none !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    /* Mantém uma borda limpa apenas na caixa de resposta */
+    .panel textarea {
+        border: 1px solid #cbd5e1 !important;
+    }
+
+    /* Evita que a pergunta e a caixa de resposta sejam divididas em duas páginas diferentes */
+    .panel li {
+        page-break-inside: avoid;
+        break-inside: avoid;
     }
 
     .panel strong {
@@ -387,7 +405,7 @@ button:active {
         margin: 0;
     }
 
-    /* Reduz bastante a margem do topo para que o painel suba, mas mantém laterais */
+    /* Reduz bastante a margem do topo para que o painel suba, mas mantém laterais e fundo */
     body {
         margin: 0.5cm 1cm 2cm 1cm !important; /* 2cm embaixo para dar espaço ao rodapé */
         padding: 0 !important;
@@ -398,7 +416,7 @@ button:active {
         margin-top: 0 !important;
     }
 
-    /* Exibe a logo da Mulesoft de forma fixa no rodapé de todas as páginas do PDF */
+    /* Exibe a logo de forma fixa no rodapé de todas as páginas do PDF */
     .print-footer {
         display: block !important;
         position: fixed;
@@ -408,5 +426,18 @@ button:active {
         text-align: right;
         padding-bottom: 0.5cm;
         padding-right: 1.5cm;
+        box-sizing: border-box;
+    }
+
+    /* Se a seção de testes tiver imagens, obriga a começar em uma nova página */
+    #test-item.has-images {
+        page-break-before: always;
+        break-before: page;
+    }
+
+    /* Evita que uma imagem seja cortada na metade entre duas folhas */
+    #test-image-list img {
+        page-break-inside: avoid;
+        break-inside: avoid;
     }
 }
