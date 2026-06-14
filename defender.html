@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Defender no Pré-Comitê PROD</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="print-footer" style="display: none;">
+        <img src="https://www.clipartmax.com/png/middle/200-2008231_mulesoft-logo-299c-stacked-feedyeti-mulesoft-logo.png" alt="MuleSoft Logo" style="height: 45px; opacity: 0.8;">
+    </div>
+    <div class="container">
+        <header>
+            <nav class="top-nav">
+                <a href="index.html">Conversor & Validador</a>
+                <a href="documentacao.html">Documentação</a>
+                <a href="defender.html" class="active">Pré-Comitê PROD</a>
+            </nav>
+            <h1>Checklist: Defender Deploy em PROD</h1>
+            <p>Guia definitivo para apresentar e aprovar suas APIs no Pré-Comitê.</p>
+        </header>
+
+        <main>
+            <div class="panel" style="padding: 2rem;">
+                <h2 style="color: var(--accent); margin-bottom: 1.5rem;">O que validar antes da reunião</h2>
+                
+                <ul style="list-style: none; padding: 0; color: var(--text-secondary); display: flex; flex-direction: column; gap: 1rem;">
+                    <li style="background-color: rgba(255,255,255,0.02); padding: 1rem; border-radius: 0.5rem; border: 1px solid var(--border-color);">
+                        <strong style="color: white; display: block; margin-bottom: 1rem;">1. Mexeu no RAML?</strong>
+                        <div style="margin-bottom: 0.5rem;">
+                            <label style="margin-right: 1rem; cursor: pointer; color: var(--text-primary);">
+                                <input type="radio" name="raml_changed" value="sim" onchange="toggleRamlDetails(true)"> Sim
+                            </label>
+                            <label style="cursor: pointer; color: var(--text-primary);">
+                                <input type="radio" name="raml_changed" value="nao" onchange="toggleRamlDetails(false)" checked> Não
+                            </label>
+                        </div>
+                        <div id="raml-details-container" style="display: none; margin-top: 1rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.85rem;">Descreva todas as mudanças realizadas no RAML:</label>
+                            <textarea id="raml-details" placeholder="Ex: Adicionado novo endpoint /users, alterado tipo de response..." style="width: 100%; min-height: 100px; padding: 0.75rem; border-radius: 0.5rem; background-color: #0f172a; color: white; border: 1px solid var(--border-color); outline: none; resize: vertical; font-family: 'Inter', sans-serif;"></textarea>
+                        </div>
+                    </li>
+                    <li style="background-color: rgba(255,255,255,0.02); padding: 1rem; border-radius: 0.5rem; border: 1px solid var(--border-color);">
+                        <strong style="color: white; display: block; margin-bottom: 1rem;">2. Mudou algo na Arquitetura ou Diagrama de Sequência?</strong>
+                        <div style="margin-bottom: 0.5rem;">
+                            <label style="margin-right: 1rem; cursor: pointer; color: var(--text-primary);">
+                                <input type="radio" name="arch_changed" value="sim" onchange="toggleArchDetails(true)"> Sim
+                            </label>
+                            <label style="cursor: pointer; color: var(--text-primary);">
+                                <input type="radio" name="arch_changed" value="nao" onchange="toggleArchDetails(false)" checked> Não
+                            </label>
+                        </div>
+                        <div id="arch-details-container" style="display: none; margin-top: 1rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.85rem;">Descreva todas as mudanças realizadas na Arquitetura ou no Fluxo:</label>
+                            <textarea id="arch-details" placeholder="Ex: Adicionado nova chamada para SAPI Salesforce, alterado fluxo de orquestração..." style="width: 100%; min-height: 100px; padding: 0.75rem; border-radius: 0.5rem; background-color: #0f172a; color: white; border: 1px solid var(--border-color); outline: none; resize: vertical; font-family: 'Inter', sans-serif;"></textarea>
+                        </div>
+                    </li>
+                    <li style="background-color: rgba(255,255,255,0.02); padding: 1rem; border-radius: 0.5rem; border: 1px solid var(--border-color);">
+                        <strong style="color: white; display: block; margin-bottom: 1rem;">3. O que foi desenvolvimento?</strong>
+                        <div id="sec-details-container" style="margin-top: 0.5rem;">
+                            <textarea id="sec-details" placeholder="Ex: Foi desenvolvida a integração com o Salesforce, criado fluxo de orquestração X, e aplicadas políticas de segurança..." style="width: 100%; min-height: 100px; padding: 0.75rem; border-radius: 0.5rem; background-color: #0f172a; color: white; border: 1px solid var(--border-color); outline: none; resize: vertical; font-family: 'Inter', sans-serif;"></textarea>
+                        </div>
+                    </li>
+                    <li style="background-color: rgba(255,255,255,0.02); padding: 1rem; border-radius: 0.5rem; border: 1px solid var(--border-color);">
+                        <strong style="color: white; display: block; margin-bottom: 1rem;">4. Testes</strong>
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.85rem;">Anexe uma evidência (imagem) da cobertura de testes:</label>
+                            <input type="file" id="test-image-upload" accept="image/*" style="color: var(--text-primary); font-size: 0.85rem; font-family: 'Inter', sans-serif;" onchange="previewTestImage(event)">
+                        </div>
+                        <div id="test-image-preview-container" style="display: none; margin-top: 1rem; text-align: center;">
+                            <img id="test-image-preview" src="" alt="Evidência de Testes" style="max-width: 100%; max-height: 400px; border-radius: 0.5rem; border: 1px solid var(--border-color);">
+                            <button type="button" onclick="removeTestImage()" style="display: block; margin: 0.5rem auto 0; background: none; border: none; color: #ef4444; cursor: pointer; font-size: 0.85rem; text-decoration: underline;">Remover Imagem</button>
+                        </div>
+                    </li>
+                </ul>
+
+                <div class="rollback-note" style="margin-top: 2rem; font-size: 0.95rem; color: var(--text-secondary); text-align: center; background-color: rgba(239, 68, 68, 0.05); border: 1px dashed #ef4444; border-radius: 0.5rem; padding: 1rem;">
+                    <strong style="color: #ef4444;">Estratégia de Rollback:</strong> Caso o smoke test não seja do modo esperado, o Rollback irá acontecer mediante a informação do cliente.
+                </div>
+
+                <div class="actions" style="margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem; text-align: center;">
+                    <button type="button" class="primary-btn" onclick="window.print()" style="background-color: var(--accent); color: white; border: none; padding: 0.75rem 2rem; font-size: 1rem; font-weight: 600; border-radius: 0.5rem; cursor: pointer;">
+                        Imprimir / Salvar em PDF
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script>
+        function toggleRamlDetails(show) {
+            const container = document.getElementById('raml-details-container');
+            if (show) {
+                container.style.display = 'block';
+                document.getElementById('raml-details').focus();
+            } else {
+                container.style.display = 'none';
+            }
+        }
+
+        function toggleArchDetails(show) {
+            const container = document.getElementById('arch-details-container');
+            if (show) {
+                container.style.display = 'block';
+                document.getElementById('arch-details').focus();
+            } else {
+                container.style.display = 'none';
+            }
+        }
+
+        function previewTestImage(event) {
+            const input = event.target;
+            const container = document.getElementById('test-image-preview-container');
+            const preview = document.getElementById('test-image-preview');
+            
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    container.style.display = 'block';
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        
+        function removeTestImage() {
+            document.getElementById('test-image-upload').value = '';
+            document.getElementById('test-image-preview').src = '';
+            document.getElementById('test-image-preview-container').style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>

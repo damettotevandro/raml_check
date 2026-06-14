@@ -1,0 +1,412 @@
+:root {
+    --bg-color: #0f172a;
+    --panel-bg: #1e293b;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --accent: #3b82f6;
+    --accent-hover: #2563eb;
+    --border-color: #334155;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    line-height: 1.6;
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+    min-height: 100vh;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+header p {
+    color: var(--text-secondary);
+}
+
+.top-nav {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+}
+
+.top-nav a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.top-nav a:hover {
+    color: var(--text-primary);
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.top-nav a.active {
+    color: var(--accent);
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+header h1 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(to right, #60a5fa, #c084fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+header p {
+    color: var(--text-secondary);
+}
+
+.editor-section {
+    display: flex;
+    gap: 1.5rem;
+    align-items: stretch;
+    min-height: 300px;
+    height: auto;
+}
+
+.panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.panel label {
+    padding: 1rem;
+    font-weight: 500;
+    background-color: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+}
+
+textarea {
+    flex: 1;
+    width: 100%;
+    padding: 1rem;
+    background-color: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9rem;
+    resize: none;
+    outline: none;
+    overflow-y: hidden;
+    min-height: 250px;
+}
+
+textarea:focus {
+    box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+.actions {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+button {
+    background-color: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px rgba(59, 130, 246, 0.25);
+}
+
+button:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(59, 130, 246, 0.35);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+    .editor-section {
+        flex-direction: column;
+        height: auto;
+    }
+    
+    .panel {
+        min-height: 300px;
+    }
+    
+    .actions {
+        padding: 1rem 0;
+    }
+}
+
+/* Validation and Anypoint Preview Styles */
+.validation-actions {
+    margin-top: 1rem;
+}
+
+.secondary-btn {
+    background-color: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    box-shadow: none;
+}
+
+.secondary-btn:hover {
+    background-color: rgba(59, 130, 246, 0.1);
+    box-shadow: none;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.anypoint-preview {
+    margin-top: 2rem;
+    background-color: #ffffff;
+    border-radius: 4px;
+    color: #333333;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.preview-header {
+    background-color: #f3f4f6;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.preview-header h3 {
+    font-size: 1.1rem;
+    color: #111827;
+    font-weight: 600;
+}
+
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.status-badge.success {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.status-badge.error {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.preview-content {
+    padding: 1.5rem;
+}
+
+.type-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #0ea5e9;
+}
+
+.anypoint-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.anypoint-table th,
+.anypoint-table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.anypoint-table th {
+    background-color: #f9fafb;
+    font-weight: 500;
+    color: #6b7280;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+}
+
+.type-string { color: #16a34a; font-family: monospace; }
+.type-integer, .type-number { color: #2563eb; font-family: monospace; }
+.type-boolean { color: #dc2626; font-family: monospace; }
+.type-object { color: #9333ea; font-family: monospace; }
+.type-array { color: #ea580c; font-family: monospace; }
+.type-any { color: #64748b; font-family: monospace; }
+
+.required-badge {
+    color: #ef4444;
+    font-weight: bold;
+}
+
+/* Templates Section */
+.templates-section {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.templates-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.templates-section p {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+.templates-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.template-card {
+    background-color: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+}
+
+.template-card h3 {
+    font-size: 1rem;
+    color: #38bdf8;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.template-card pre {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+}
+
+.template-card code {
+    font-family: 'Courier New', Courier, monospace;
+    color: #e2e8f0;
+    font-size: 0.85rem;
+}
+
+@media (max-width: 768px) {
+    .templates-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Print adjustments */
+@media print {
+    /* Oculta completamente o cabeçalho (nav, h1, p) na impressão */
+    header {
+        display: none !important;
+    }
+
+    /* Oculta botões de ação e cabeçalho da seção */
+    .actions, .panel h2 {
+        display: none !important;
+    }
+
+    /* Oculta labels (Sim/Não, textos de instrução), inputs (radio e file) e botões de remover nas listas */
+    .panel li label, 
+    .panel li input, 
+    .panel li button {
+        display: none !important;
+    }
+
+    /* Deixa o fundo transparente e o texto mais legível para impressão em papel (preto e branco) */
+    .panel, .panel li, .panel textarea {
+        background-color: transparent !important;
+        border-color: #cbd5e1 !important;
+        color: #0f172a !important;
+    }
+
+    .panel strong {
+        color: #000 !important;
+    }
+
+    /* Ajusta a altura da textarea baseada no conteúdo e remove marcação de redimensionamento */
+    .panel textarea {
+        resize: none !important;
+        overflow: visible !important;
+    }
+
+    /* Remove cabeçalhos e rodapés do navegador (onde fica a URL file:///) */
+    @page {
+        margin: 0;
+    }
+
+    /* Reduz bastante a margem do topo para que o painel suba, mas mantém laterais */
+    body {
+        margin: 0.5cm 1cm 2cm 1cm !important; /* 2cm embaixo para dar espaço ao rodapé */
+        padding: 0 !important;
+        background-color: white !important;
+    }
+
+    header {
+        margin-top: 0 !important;
+    }
+
+    /* Exibe a logo da Mulesoft de forma fixa no rodapé de todas as páginas do PDF */
+    .print-footer {
+        display: block !important;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        text-align: right;
+        padding-bottom: 0.5cm;
+        padding-right: 1.5cm;
+    }
+}

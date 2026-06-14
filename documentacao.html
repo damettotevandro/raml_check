@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerar Documentação -API</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({ startOnLoad: true, theme: 'dark' });</script>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <nav class="top-nav">
+                <a href="index.html">Conversor & Validador</a>
+                <a href="documentacao.html" class="active">Documentação</a>
+                <a href="defender.html">Pré-Comitê PROD</a>
+            </nav>
+            <h1>GERE DIAGRAMA DE SEQUENCIA</h1>
+        </header>
+
+        <main>
+            <div class="panel" style="padding: 2rem;">
+                <h2 style="color: var(--accent); margin-bottom: 1.5rem;">Configuração do Endpoint</h2>
+
+                <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 200px;">
+                        <label for="method-selector"
+                            style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary); font-weight: 500;">Selecione
+                            o Método HTTP</label>
+                        <select id="method-selector"
+                            style="width: 100%; padding: 0.75rem; border-radius: 0.5rem; background-color: #0f172a; color: var(--text-primary); border: 1px solid var(--border-color); outline: none; font-family: 'Inter', sans-serif;">
+                            <option value="" disabled selected>-- Escolha um método --</option>
+                            <option value="GET">GET</option>
+                            <option value="POST">POST</option>
+                            <option value="PUT">PUT</option>
+                            <option value="PATCH">PATCH</option>
+                            <option value="DELETE">DELETE</option>
+                        </select>
+                    </div>
+                    <div style="flex: 2; min-width: 300px;">
+                        <label for="global-endpoint-name"
+                            style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary); font-weight: 500;">Nome
+                            / Descrição do Endpoint Geral</label>
+                        <input type="text" id="global-endpoint-name" placeholder="Ex: Pedido C Care"
+                            style="width: 100%; padding: 0.75rem; border-radius: 0.5rem; background-color: #0f172a; color: white; border: 1px solid var(--border-color); outline: none;">
+                    </div>
+                </div>
+
+                <!-- Seção de APIs -->
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label
+                        style="display: block; margin-bottom: 1rem; color: var(--text-secondary); font-weight: 500;">API</label>
+
+                    <div id="flows-container" style="display: flex; flex-direction: column; gap: 1rem;">
+                        <!-- A primeira API padrão -->
+                        <div class="flow-item"
+                            style="background-color: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); padding: 1rem; border-radius: 0.5rem;">
+                            <div style="display: flex; gap: 1rem; margin-bottom: 0.5rem;">
+                                <div style="flex: 1;">
+                                    <label style="font-size: 0.85rem; color: var(--text-secondary);">Nome da API</label>
+                                    <select class="api-select"
+                                        style="width: 100%; padding: 0.5rem; border-radius: 0.25rem; background-color: #0f172a; color: white; border: 1px solid var(--border-color); outline: none; font-family: 'Inter', sans-serif;">
+                                        <option value="" disabled selected>-- Selecione uma API --</option>
+                                        <option value="EAPI DIVERSOS">EAPI DIVERSOS</option>
+                                        <option value="EAPI SALESFORCE">EAPI SALESFORCE</option>
+                                        <option value="EAPI PROTHEUS">EAPI PROTHEUS</option>
+                                        <option value="PAPI TRANSACIONAL">PAPI TRANSACIONAL</option>
+                                        <option value="SAPI PROTHEUS">SAPI PROTHEUS</option>
+                                        <option value="SAPI SALESFORCE">SAPI SALESFORCE</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" id="add-flow-btn" class="secondary-btn"
+                        style="margin-top: 1rem; padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 0.25rem; cursor: pointer;">
+                        + Adicionar Nova API
+                    </button>
+                </div>
+
+                <!-- Botão Gerar Diagrama -->
+                <div class="actions"
+                    style="margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem; text-align: center;">
+                    <button type="button" id="generate-diagram-btn"
+                        style="background-color: var(--accent); color: white; border: none; padding: 0.75rem 2rem; font-size: 1rem; font-weight: 600; border-radius: 0.5rem; cursor: pointer; transition: all 0.2s ease;">
+                        Gerar Diagrama da API
+                    </button>
+                </div>
+
+                <div id="diagram-container"
+                    style="margin-top: 2rem; display: none; background-color: rgba(255, 255, 255, 0.02); padding: 1.5rem; border-radius: 0.5rem; border: 1px solid var(--border-color); text-align: center; position: relative;">
+                    <div style="position: absolute; top: 1rem; right: 1rem; display: flex; gap: 0.5rem;">
+                        <button type="button" id="copy-mermaid-btn"
+                            style="background-color: transparent; border: 1px solid var(--border-color); color: var(--text-primary); padding: 0.4rem 0.8rem; border-radius: 0.25rem; font-size: 0.8rem; cursor: pointer; transition: background 0.2s;">Copiar
+                            Mermaid</button>
+                        <button type="button" id="download-svg-btn"
+                            style="background-color: transparent; border: 1px solid var(--border-color); color: var(--text-primary); padding: 0.4rem 0.8rem; border-radius: 0.25rem; font-size: 0.8rem; cursor: pointer; transition: background 0.2s;">Baixar
+                            SVG</button>
+                    </div>
+                    <p style="color: var(--text-secondary);">O diagrama visual (fluxo/arquitetura) da sua API aparecerá
+                        aqui.</p>
+                    <div id="diagram-output" style="margin-top: 2rem;"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.getElementById('add-flow-btn').addEventListener('click', function () {
+            const container = document.getElementById('flows-container');
+            const newFlow = document.createElement('div');
+            newFlow.className = 'flow-item';
+            newFlow.style.cssText = 'background-color: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); padding: 1rem; border-radius: 0.5rem; position: relative;';
+
+            newFlow.innerHTML = `
+                <button type="button" class="remove-flow-btn" style="position: absolute; top: 0.5rem; right: 0.5rem; background: none; border: none; color: #ef4444; cursor: pointer; font-weight: bold;">X</button>
+                <div style="display: flex; gap: 1rem; margin-bottom: 0.5rem;">
+                    <div style="flex: 1;">
+                        <label style="font-size: 0.85rem; color: var(--text-secondary);">Nome da API</label>
+                        <select class="api-select" style="width: 100%; padding: 0.5rem; border-radius: 0.25rem; background-color: #0f172a; color: white; border: 1px solid var(--border-color); outline: none; font-family: 'Inter', sans-serif;">
+                            <option value="" disabled selected>-- Selecione uma API --</option>
+                            <option value="EAPI DIVERSOS">EAPI DIVERSOS</option>
+                            <option value="EAPI SALESFORCE">EAPI SALESFORCE</option>
+                            <option value="EAPI PROTHEUS">EAPI PROTHEUS</option>
+                            <option value="PAPI TRANSACIONAL">PAPI TRANSACIONAL</option>
+                            <option value="SAPI PROTHEUS">SAPI PROTHEUS</option>
+                            <option value="SAPI SALESFORCE">SAPI SALESFORCE</option>
+                        </select>
+                    </div>
+                </div>
+            `;
+
+            newFlow.querySelector('.remove-flow-btn').addEventListener('click', function () {
+                container.removeChild(newFlow);
+            });
+
+            container.appendChild(newFlow);
+        });
+
+        document.getElementById('generate-diagram-btn').addEventListener('click', function () {
+            const container = document.getElementById('diagram-container');
+            container.style.display = 'block';
+
+            // Simula a geração de um diagrama simples
+            const output = document.getElementById('diagram-output');
+            const method = document.getElementById('method-selector').value || 'MÉTODO';
+
+            const items = [];
+            document.querySelectorAll('#flows-container .flow-item').forEach(itemElem => {
+                const apiSelect = itemElem.querySelector('.api-select').value;
+                if (apiSelect) {
+                    items.push({ apiSelect });
+                }
+            });
+
+            if (items.length === 0) {
+                output.innerHTML = `<span style="color: #ef4444;">Selecione pelo menos uma API para gerar o diagrama.</span>`;
+                return;
+            }
+
+            const globalEndpointName = document.getElementById('global-endpoint-name').value || 'Endpoint Não Nomeado';
+
+            // Geração do diagrama de sequência do Mermaid
+            let mermaidSyntax = `sequenceDiagram\n`;
+
+            items.forEach((item, index) => {
+                mermaidSyntax += `    participant A${index} as ${item.apiSelect}\n`;
+            });
+
+            if (items.length === 1) {
+                mermaidSyntax += `    Note over A0: [${method}] ${globalEndpointName}\n`;
+            } else {
+                // Requisições em cascata
+                for (let i = 0; i < items.length - 1; i++) {
+                    mermaidSyntax += `    A${i}->>A${i + 1}: [${method}] ${globalEndpointName}\n`;
+                }
+
+                // Respostas em cascata (reverso)
+                for (let i = items.length - 1; i > 0; i--) {
+                    mermaidSyntax += `    A${i}-->>A${i - 1}: Retorna Resultado\n`;
+                }
+            }
+
+            output.innerHTML = `<div class="mermaid">${mermaidSyntax}</div>`;
+
+            // Guarda a sintaxe para o botão de copiar
+            document.getElementById('copy-mermaid-btn').dataset.syntax = mermaidSyntax;
+
+            // Renderiza o diagrama do mermaid novamente
+            mermaid.init(undefined, document.querySelectorAll('.mermaid'));
+
+            container.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Eventos de Exportação
+        document.getElementById('copy-mermaid-btn').addEventListener('click', function () {
+            const syntax = this.dataset.syntax;
+            if (syntax) {
+                navigator.clipboard.writeText(syntax).then(() => {
+                    const originalText = this.innerText;
+                    this.innerText = 'Copiado!';
+                    setTimeout(() => this.innerText = originalText, 2000);
+                });
+            }
+        });
+
+        document.getElementById('download-svg-btn').addEventListener('click', function () {
+            const svgElement = document.querySelector('#diagram-output svg');
+            if (svgElement) {
+                // Adiciona background explícito para SVG antes de baixar
+                const originalBg = svgElement.style.backgroundColor;
+                svgElement.style.backgroundColor = '#0f172a';
+
+                const serializer = new XMLSerializer();
+                let svgString = serializer.serializeToString(svgElement);
+
+                // Restaura background original
+                svgElement.style.backgroundColor = originalBg;
+
+                // Prepara o blob e faz o download
+                const blob = new Blob([svgString], { type: "image/svg+xml;charset=utf-8" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "diagrama-api.svg";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            } else {
+                alert("Nenhum diagrama SVG encontrado para baixar.");
+            }
+        });
+    </script>
+</body>
+
+</html>
